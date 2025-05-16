@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shovith - Connect</title>
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="shortcut icon" href="sd-high-resolution-logo.ico" type="image/x-icon">
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+<style>
+/* Neo-Brutalist Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Global Variables */
+:root {
+  --primary: #FF3E00;
+  --primary-hover: #FF6D43;
+  --secondary: #4D61FF;
+  --secondary-hover: #5E70FF;
+  --accent: #00E0B0;
+  --text: #050505;
+  --bg: #FFFFFF;
+  --shadow-color: #000000;
+  --pattern-color: #CFCFCF;
+  --border-thickness: 0.35rem;
+  --shadow-offset: 0.5rem;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 2rem;
+  position: relative;
+}
+
+/* Neo-Brutalist Card Styles */
+.card {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6em;
+  box-shadow: 
+    var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color),
+    inset 0 0 0 0.15rem rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transform-origin: center;
+  margin-bottom: 3rem;
+}
+
+.card-pattern-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 0.5em 0.5em;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.card-overlay-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+  background-size: 1em 1em;
+  background-position: -0.5em -0.5em;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+}
+
+.card:hover .card-pattern-grid,
+.card:hover .card-overlay-dots {
+  opacity: 1;
+}
+
+/* Header Section */
+.hero {
+  position: relative;
+  padding: 2rem;
+  text-align: center;
+  border-bottom: var(--border-thickness) solid var(--text);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  width: 4rem;
+  height: 4rem;
+  background: var(--accent);
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+.hero::after {
+  content: "★";
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.hero img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+.share-button {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: var(--primary);
+  color: var(--bg);
+  padding: 0.5rem 1rem;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.share-button:hover {
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.4rem 0.4rem 0 var(--shadow-color);
+}
+
+.share-button:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--shadow-color);
+}
+
+/* Sections */
+.section {
+  padding: 2rem;
+  border-bottom: var(--border-thickness) solid var(--text);
+  position: relative;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 100%;
+  height: 0.3rem;
+  background: var(--accent);
+  z-index: -1;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Chat Boxes */
+.chat-box {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-box:hover {
+  transform: translate(-0.2rem, -0.2rem);
+  box-shadow: 0.5rem 0.5rem 0 var(--shadow-color);
+}
+
+.chat-box:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--shadow-color);
+}
+
+.chat-box .icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.chat-box p {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+/* Specific Icon Colors */
+.icon.beeper { color: #3e83ff; }
+.icon.google { color: #db4437; }
+.icon.facebook { color: #1877f2; }
+.icon.rcs { color: #ffac33; }
+.icon.signal { color: #3a76f0; }
+.icon.telegram { color: #26a5e4; }
+.icon.whatsapp { color: #25d366; }
+.icon.instagram { color: #e1306c; }
+.icon.linkedin { color: #0077b5; }
+.icon.discord { color: #5865f2; }
+.icon.slack { color: #4a154b; }
+.icon.youtube { color: #FF0000; }
+.icon.snapchat { color: #fffc00; }
+
+/* Games Section */
+.game-box {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.game-box:hover {
+  transform: translate(-0.2rem, -0.2rem);
+  box-shadow: 0.5rem 0.5rem 0 var(--shadow-color);
+}
+
+.game-box .icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.game-name-b {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  display: block;
+}
+
+.game-strong {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 1rem 0;
+  display: block;
+}
+
+.preview-img {
+  width: 100%;
+  max-width: 200px;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  margin: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.preview-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+}
+
+.external-link-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--text);
+  color: var(--bg);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1rem;
+}
+
+/* Vault Section */
+.vault-box {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+  margin-top: 1.5rem;
+}
+
+.vault-box .icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+#vault-password {
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-size: 1rem;
+}
+
+#submit {
+  width: 100%;
+  padding: 1rem;
+  background: var(--primary);
+  color: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  text-transform: uppercase;
+}
+
+#submit:hover {
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.4rem 0.4rem 0 var(--shadow-color);
+}
+
+#submit:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--shadow-color);
+}
+
+.error-message {
+  color: var(--primary);
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* Contact Form */
+.contact {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  position: relative;
+}
+
+.contact h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.contact label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.contact input,
+.contact textarea,
+.contact select {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-size: 1rem;
+}
+
+.contact button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  background: var(--secondary);
+  color: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  text-transform: uppercase;
+}
+
+.contact button[type="submit"]:hover {
+  background: var(--secondary-hover);
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.4rem 0.4rem 0 var(--shadow-color);
+}
+
+.contact button[type="submit"]:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--shadow-color);
+}
+
+/* Buttons */
+.toggle-button {
+  padding: 1rem 2rem;
+  background: var(--primary);
+  color: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin: 0 1rem 1rem 0;
+}
+
+.toggle-button:hover {
+  background: var(--primary-hover);
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.4rem 0.4rem 0 var(--shadow-color);
+}
+
+.toggle-button:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--shadow-color);
+}
+
+.buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: var(--border-thickness) solid var(--text);
+}
+
+footer p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+footer a {
+  color: var(--secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  background: var(--bg);
+  box-shadow: 0.5rem 0.5rem 0 var(--shadow-color);
+}
+
+.close-modal {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: var(--bg);
+  font-size: 2rem;
+  cursor: pointer;
+  background: var(--text);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Privacy Policy Popup */
+.privacy-popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.privacy-popup-content {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 2rem;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0.5rem 0.5rem 0 var(--shadow-color);
+  position: relative;
+}
+
+.privacy-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.poli-h {
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem;
+  border-bottom: var(--border-thickness) solid var(--text);
+  padding-bottom: 0.5rem;
+}
+
+.poli-h3 {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.poli-p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.poli-a {
+  color: var(--secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .hero img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .buttons-container {
+    flex-direction: column;
+  }
+  
+  .toggle-button {
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+}
+
+/* Utility Classes */
+.hidden {
+  display: none;
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated {
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* Loader Styles */
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.loader {
+  width: 80px;
+  height: 80px;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Time and Weather */
+#datetime-weather {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+#time {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+#date, #day {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+#weather-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.weather-icon {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  z-index: 100;
+}
+
+.theme-toggle i {
+  font-size: 1.5rem;
+}
+
+/* Music Player */
+.music-player {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  z-index: 100;
+}
+
+.music-player i {
+  font-size: 1.5rem;
+}
+
+/* Contact Details Popup */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 2rem;
+  max-width: 500px;
+  box-shadow: 0.5rem 0.5rem 0 var(--shadow-color);
+  position: relative;
+}
+
+.pop-p {
+  margin: 1rem 0;
+  line-height: 1.5;
+}
+
+#cd {
+  color: var(--primary);
+}
+
+#id-card {
+  color: var(--primary);
+}
+
+.gpay-direct-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  background: var(--primary);
+  color: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0.3rem 0.3rem 0 var(--shadow-color);
+  margin-top: 1rem;
+}
+
+.gpay-direct-button img {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.gpay-direct-button:hover {
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.4rem 0.4rem 0 var(--shadow-color);
+}
+
+.gpay-direct-button:active {
+  transform: translate(0.1rem, 0.1rem);
+  box-shadow: 0.2rem 0.2rem 0 var(--shadow-color);
+}
+
+/* Availability Table */
+.availability-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.availability-table th,
+.availability-table td {
+  border: var(--border-thickness) solid var(--text);
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.availability-table th {
+  background: var(--primary);
+  color: var(--bg);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.availability-table tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Image Container */
+.img-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background: var(--bg);
+  border: none;
+}
+
+/* Response Messages */
+#response-message,
+#response-message-second {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+}
+
+/* External Link Icon */
+.external-link-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--text);
+  color: var(--bg);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1rem;
+}
+
+/* Warning Popup */
+.game-warning-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-warning-content {
+  background: var(--bg);
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.6rem;
+  padding: 2rem;
+  max-width: 400px;
+  box-shadow: 0.5rem 0.5rem 0 var(--shadow-color);
+  position: relative;
+}
+
+.game-warning-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.game-warning-button {
+  padding: 0.8rem 1.5rem;
+  border: var(--border-thickness) solid var(--text);
+  border-radius: 0.3rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.game-warning-continue {
+  background: var(--primary);
+  color: var(--bg);
+}
+
+.game-warning-close {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.game-warning-close-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Stamp Effect */
+.stamp {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 4rem;
+  height: 4rem;
+  border: var(--border-thickness) dashed var(--text);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(-15deg);
+  opacity: 0.3;
+}
+
+.stamp-text {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Corner Slice */
+.corner-slice {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  background: var(--bg);
+  border-right: var(--border-thickness) solid var(--text);
+  border-top: var(--border-thickness) solid var(--text);
+  border-radius: 0 0.6rem 0 0;
+  z-index: 1;
+}
+
+/* Bold Pattern */
+.bold-pattern {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* Dots Pattern */
+.dots-pattern {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* Accent Shape */
+.accent-shape {
+  position: absolute;
+  bottom: -1rem;
+  right: -1rem;
+  width: 3rem;
+  height: 3rem;
+  background: var(--accent);
+  transform: rotate(45deg);
+  z-index: 0;
+}
+
+/* Session ID Link */
+#session-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom SVG Icons */
+.icon-x svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  fill: #1da1f2;
+}
+
+.icon-signal svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.icon-session svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Light Mode Adjustments */
+body.light-mode {
+  --primary: #FF6D43;
+  --primary-hover: #FF3E00;
+  --secondary: #5E70FF;
+  --secondary-hover: #4D61FF;
+  --accent: #00B4D8;
+  --text: #1A2E3B;
+  --bg: #FFFFFF;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --pattern-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode {
+  --primary: #FF3E00;
+  --primary-hover: #FF6D43;
+  --secondary: #4D61FF;
+  --secondary-hover: #5E70FF;
+  --accent: #00E0B0;
+  --text: #FFFFFF;
+  --bg: #050505;
+  --shadow-color: rgba(255, 255, 255, 0.2);
+  --pattern-color: rgba(255, 255, 255, 0.1);
+}
+</style>
+</head>
+<body>
+<!-- Loader -->
+<div class="loader-container">
+  <div class="loader"></div>
+</div>
+
+<!-- Main Content -->
+<div class="card">
+  <div class="card-pattern-grid"></div>
+  <div class="card-overlay-dots"></div>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <button class="share-button" onclick="sharePage()">
+      <i class="fas fa-share-alt"></i> Share
+    </button>
+    
+    <img src="Dp/+91 87778 45713 20241201_101310.jpg" alt="Profile Picture">
+    <h1>Shovith Debnath</h1>
+    <p>Howdy silly goose, it's your homeboy Shovith. Multi-talented, goofy, a little off-topic, and a lot of autism. Hope to know each other more!</p>
+    
+    <!-- Time and Weather -->
+    <div id="datetime-weather">
+      <div id="local-label">My Local Date-Time</div>
+      <div id="location">Kolkata - India</div>
+      <div id="time-line">
+        <i id="day-night-icon" class="fas fa-sun"></i>
+        <span id="time">--:--:--</span>
+      </div>
+      <div id="date-day-line">
+        <span id="date">Loading date...</span> | <span id="day">Loading day...</span>
+      </div>
+      <div id="weather-line">
+        <i id="weather-icon" class="fas fa-cloud weather-icon"></i>
+        <span id="temperature">--°C</span>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Availability Section -->
+  <section class="section">
+    <h2 class="section-title">Availability</h2>
+    <p class="section-subtitle">[ Keep 'My Local Date-Time' in mind ]</p>
+    
+    <div class="animation-box">
+      <img src="lv-0-20250418083656-unscreen.gif" alt="Animated GIF" class="moving-gif">
+      <div class="animated-text">
+        <p>Sorry, can't play 🥹<br><br>I'm currently unavailable from</p><br>
+        <p><strong>*Unknown*</strong><br>to<br><strong>*Unknown*</strong></p>
+      </div>
+    </div>
+    
+    <table class="availability-table">
+      <thead>
+        <tr>
+          <th>Days</th>
+          <th>Morning Time</th>
+          <th>Evening Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Monday</td>
+          <td>09-11 A.M.</td>
+          <td>After 7 P.M.</td>
+        </tr>
+        <tr>
+          <td>Tuesday</td>
+          <td>09-11 A.M.</td>
+          <td>After 7 P.M.</td>
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td>09-11 A.M.</td>
+          <td>After 7 P.M.</td>
+        </tr>
+        <tr>
+          <td>Thursday</td>
+          <td>09-11 A.M.</td>
+          <td>After 7 P.M.</td>
+        </tr>
+        <tr>
+          <td>Friday</td>
+          <td>09-11 A.M.</td>
+          <td>After 7 P.M.</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>11 A.M.-1 P.M.</td>
+          <td>5 P.M.-8 P.M.</td>
+        </tr>
+        <tr>
+          <td>Sunday</td>
+          <td>1 P.M.-4 P.M.</td>
+          <td>Anytime after 6 P.M.</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p class="section-subtitle">**Note :- I'm always available to play during official holidays or any other Indian festivals.</p>
+    
+    <div class="dots-pattern">
+      <svg viewBox="0 0 80 40">
+        <circle fill="var(--text)" r="3" cy="10" cx="10"></circle>
+        <circle fill="var(--text)" r="3" cy="10" cx="30"></circle>
+        <circle fill="var(--text)" r="3" cy="10" cx="50"></circle>
+        <circle fill="var(--text)" r="3" cy="10" cx="70"></circle>
+        <circle fill="var(--text)" r="3" cy="20" cx="20"></circle>
+        <circle fill="var(--text)" r="3" cy="20" cx="40"></circle>
+        <circle fill="var(--text)" r="3" cy="20" cx="60"></circle>
+        <circle fill="var(--text)" r="3" cy="30" cx="10"></circle>
+        <circle fill="var(--text)" r="3" cy="30" cx="30"></circle>
+        <circle fill="var(--text)" r="3" cy="30" cx="50"></circle>
+        <circle fill="var(--text)" r="3" cy="30" cx="70"></circle>
+      </svg>
+    </div>
+    
+    <div class="stamp">
+      <span class="stamp-text">Approved</span>
+    </div>
+  </section>
+  
+  <!-- Games Section -->
+  <section class="section">
+    <h2 class="section-title">Games</h2>
+    <p class="section-subtitle">[ Click icon to expand ]</p>
+    
+    <div class="game-box" id="game-box">
+      <i class="fas fa-gamepad icon"></i>
+      
+      <!-- Hidden content -->
+      <div id="game-desc" class="hidden">
+        <p class="link-p">' <i class="fas fa-external-link-alt"></i> ' marked images has external links</p>
+        <b class="game-name-b">Pokémon Unite</b>
+        <div style="position: relative; display: inline-block;">
+          <a href="https://uniteapi.dev/p/LXLC5ET?type=auto">
+            <img src="Game ss/Pokémon Unite/Picsart_25-05-10_09-31-03-377_optimized.png" alt="Game Image">
+            <i class="fas fa-external-link-alt external-link-icon"></i>
+          </a>
+        </div>
+        <strong class="game-strong">↓↓↓↓↓↓↓↓↓↓ Click to Enlarge ↓↓↓↓↓↓↓↓↓↓</strong>
+        <div class="img-container">
+          <img src="Game ss/Pokémon Unite/Screenshot_20240923-181136_Pokmon UNITE.jpg" alt="Game 1" class="preview-img">
+          <img src="Game ss/Pokémon Unite/2025-03-08_17477891.jpg" alt="Game 2" class="preview-img">
+          <img src="Game ss/Pokémon Unite/2025-03-12_35904791.jpg" alt="Game 3" class="preview-img">
+          <img src="Game ss/Pokémon Unite/2025-03-12_12707321.jpg" alt="Game 4" class="preview-img">
+        </div>
+        
+        <footer>
+          <b class="game-name-b">Clash of Clans</b>
+          <div style="position: relative; display: inline-block;">
+            <a href="https://www.clashofstats.com/players/hawkay-9V9VRYJCL/summary">
+              <img src="Game ss/Clash of Clans/Picsart_25-05-07_21-23-53-179.png" alt="Game Image" style="margin-bottom: 20px;">
+              <i class="fas fa-external-link-alt external-link-icon"></i>
+            </a>
+          </div>
+          <strong class="game-strong">↓↓↓↓↓↓↓↓↓↓ Click to Enlarge ↓↓↓↓↓↓↓↓↓↓</strong>
+          <div class="img-container">
+            <img src="Game ss/Clash of Clans/sk1.jpg" alt="Game 1" class="preview-img">
+            <img src="Game ss/Clash of Clans/sk2.jpg" alt="Game 2" class="preview-img">
+            <img src="Game ss/Clash of Clans/sk3.jpg" alt="Game 3" class="preview-img">
+            <img src="Game ss/Clash of Clans/sk4.jpg" alt="Game 4" class="preview-img">
+          </div>
+        </footer>
+        
+        <footer>
+          <b class="game-name-b">Brawl Stars</b>
+          <div style="position: relative; display: inline-block;">
+            <a href="https://brawlify.com/stats/profile/88880U08G">
+              <img src="Game ss/Brawl Stars/Picsart_25-05-07_21-16-48-447.png" alt="Game Image" style="margin-bottom: 20px;">
+              <i class="fas fa-external-link-alt external-link-icon"></i>
+            </a>
+          </div>
+          <strong class="game-strong">↓↓↓↓↓↓↓↓↓↓ Click to Enlarge ↓↓↓↓↓↓↓↓↓↓</strong>
+          <div class="img-container">
+            <img src="Game ss/Brawl Stars/ns1.jpg" alt="Game 1" class="preview-img">
+            <img src="Game ss/Brawl Stars/ns2.jpg" alt="Game 2" class="preview-img">
+            <img src="Game ss/Brawl Stars/ns3.jpg" alt="Game 3" class="preview-img">
+            <img src="Game ss/Brawl Stars/ns4.jpg" alt="Game 4" class="preview-img">
+          </div>
+        </footer>
+        
+        <footer>
+          <b class="game-name-b">Pokémon TCG Pocket</b>
+          <div style="position: relative; display: inline-block;">
+            <img src="Game ss/Pokémon TCG Pocket/Picsart_25-04-17_17-24-11-499.png" alt="Game Image" style="margin-bottom: 20px;">
+          </div>
+          <strong class="game-strong">↓↓↓↓↓↓↓↓↓↓ Click to Enlarge ↓↓↓↓↓↓↓↓↓↓</strong>
+          <div class="img-container">
+            <img src="Game ss/Pokémon TCG Pocket/Screenshot_20250417_172527_Pokmon TCGP.jpg" alt="Game 1" class="preview-img">
+            <img src="Game ss/Pokémon TCG Pocket/Screenshot_20250417_172548_Pokmon TCGP.jpg" alt="Game 2" class="preview-img">
+            <img src="Game ss/Pokémon TCG Pocket/Screenshot_20250417_172609_Pokmon TCGP.jpg" alt="Game 3" class="preview-img">
+            <img src="Game ss/Pokémon TCG Pocket/Screenshot_20250422_134332_Pokmon TCGP.jpg" alt="Game 4" class="preview-img">
+          </div>
+        </footer>
+        
+        <footer>
+          <b class="game-name-b">Clash Royale</b>
+          <div style="position: relative; display: inline-block;">
+            <a href="https://royaleapi.com/player/8P89JGGRJ">
+              <img src="Game ss/Clash Royale/Picsart_25-05-07_01-29-52-431.png" alt="Game Image" style="margin-bottom: 20px;">
+              <i class="fas fa-external-link-alt external-link-icon"></i>
+            </a>
+          </div>
+          <strong class="game-strong">↓↓↓↓↓↓↓↓↓↓ Click to Enlarge ↓↓↓↓↓↓↓↓↓↓</strong>
+          <div class="img-container">
+            <img src="Game ss/Clash Royale/Screenshot_20250507_005841_Clash Royale.jpg" alt="Game 1" class="preview-img">
+            <img src="Game ss/Clash Royale/Screenshot_20250507_005519_Clash Royale.jpg" alt="Game 2" class="preview-img">
+            <img src="Game ss/Clash Royale/Screenshot_20250507_005203_Clash Royale.jpg" alt="Game 3" class="preview-img">
+            <img src="Game ss/Clash Royale/Screenshot_20250507_011157_Clash Royale.jpg" alt="Game 4" class="preview-img">
+          </div>
+        </footer>
+      </div>
+      
+      <button class="close-btn" id="close-btn">×</button>
+    </div>
+    
+    <div class="bold-pattern">
+      <svg viewBox="0 0 100 100">
+        <path
+          stroke-dasharray="15 10"
+          stroke-width="10"
+          stroke="var(--text)"
+          fill="none"
+          d="M0,0 L100,0 L100,100 L0,100 Z"
+        ></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Connections Section -->
+  <section class="section">
+    <h2 class="section-title">Connections</h2>
+    
+    <h3 class="section-subtitle">Contact</h3>
+    <div class="grid">
+      <div class="chat-box">
+        <a href="tel:+918777845713">
+          <span class="icon fas fa-phone" id="phone-icon"></span>
+          <p>Phone</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="#" id="contact-details-link">
+          <span id="id-card" class="icon fas fa-id-card"></span>
+          <p>Contact Details</p>
+        </a>
+      </div>
+    </div>
+    
+    <h3 class="section-subtitle">Payments</h3>
+    <div class="chat-box" style="max-width: 300px; margin: 0 auto;">
+      <button id="gpay-button" class="icon fab fa-google-pay" style="color: #db4437; border: none; background: none;"></button>
+      <p>Google Pay</p>
+    </div>
+    
+    <h3 class="section-subtitle">Chat</h3>
+    <div class="grid">
+      <div class="chat-box">
+        <a href="sms:+918777845713">
+          <span class="icon fas fa-sms rcs"></span>
+          <p>Message</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="https://wa.me/+918777845713">
+          <span class="icon fab fa-whatsapp whatsapp"></span>
+          <p>WhatsApp</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="https://www.snapchat.com/add/shovith_deb002?share_id=Zo5SjSFJBfQ&locale=en-GB">
+          <span class="icon fab fa-snapchat-ghost snapchat"></span>
+          <p>Snapchat</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="https://t.me/X_o_x_o_002">
+          <span class="icon fab fa-telegram-plane telegram"></span>
+          <p>Telegram</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="https://signal.me/#eu/w9qNZb_G7dj811hEQeyyJpkvyRtUs6iA7OL0DP9ATrmiDNLNA4hJpIwBSg0CNqpn" target="_blank">
+          <span class="icon-signal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 122.31" style="width: 40px; height: 40px; display: block; margin: 0 auto;">
+              <style>.cls-2{fill:#3A76F0;}</style>
+              <g transform="scale(1.4) translate(-17, -17)">
+                <path class="cls-2" d="M61.44,25.39A35.76,35.76,0,0,0,31.18,80.18L27.74,94.86l14.67-3.44a35.77,35.77,0,1,0,19-66ZM41,95.47L35.1,96.85l.94,4,4.35-1a43.36,43.36,0,0,0,10.46,4l1-4A40,40,0,0,1,41,95.45ZM21.76,86.53l4,.93,1.37-5.91a39.6,39.6,0,0,1-4.43-10.82l-4,1a44.23,44.23,0,0,0,4.06,10.46l-1,4.35Zm9.68,11.15-8.52,2,2-8.52-4-.93-2,8.51a4.12,4.12,0,0,0,3.08,5,4,4,0,0,0,1.88,0l8.52-2-.94-4.06Zm24-76a40.56,40.56,0,0,1,12,0L68,17.63a44.25,44.25,0,0,0-13.2,0l.63,4.07ZM99.14,38.4l-3.53,2.12a39.89,39.89,0,0,1,4.57,11l4-1a43.75,43.75,0,0,0-5-12.18Zm-69.81-.91A40.29,40.29,0,0,1,37.78,29l-2.47-3.32A43.62,43.62,0,0,0,26,35l3.32,2.47ZM85.1,29a40.11,40.11,0,0,1,8.46,8.45L96.88,35a43.62,43.62,0,0,0-9.3-9.3L85.1,29Zm8.46,55.78a40.11,40.11,0,0,1-8.46,8.45l2.45,3.32a44,44,0,0,0,9.33-9.3l-3.32-2.47ZM67.42,100.6a39.89,39.89,0,0,1-12,0l-.62,4.09a44.18,44.18,0,0,0,13.19,0l-.62-4.09Zm36.76-28.88-4-1A40,40,0,0,1,95.6,81.8l3.53,2.12a43.72,43.72,0,0,0,5.05-12.2Zm-2.84-10.57a39.93,39.93,0,0,1-.45,6l4.07.62a44.18,44.18,0,0,0,0-13.19l-4.07.62a39.8,39.8,0,0,1,.45,6ZM84.2,98.85l-2.12-3.53a39.89,39.89,0,0,1-11,4.57l1,4a43.75,43.75,0,0,0,12.18-5ZM21.55,61.15a41.15,41.15,0,0,1,.44-6l-4.07-.62a44.18,44.18,0,0,0,0,13.19L22,67.13a41.28,41.28,0,0,1-.44-6Zm2.2-22.75A43.83,43.83,0,0,0,18.7,50.59l4,1a40.08,40.08,0,0,1,4.57-11.06L23.75,38.4ZM72,18.41l-1,4A40.08,40.08,0,0,1,82.08,27l2.13-3.53A44,44,0,0,0,72,18.41Zm-21.13,0,1,4A40.08,40.08,0,0,0,40.8,27l-2.12-3.53a44,44,0,0,1,12.2-5.05Z"/>
+              </g>
+            </svg>
+          </span>
+          <p>Signal</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="#" id="session-link">
+          <span class="icon-session">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px; display: block; margin: 0 auto;">
+              <title>Session</title>
+              <path fill="#05A660" d="m19.431 12.193-4.53-2.51h3.071a4.847 4.847 0 0 0 4.842-4.841A4.848 4.848 0 0 0 17.972 0H7.252a6.073 6.073 0 0 0-6.066 6.066 6.566 6.566 0 0 0 3.383 5.741l4.53 2.51H6.028a4.847 4.847 0 0 0-4.842 4.841A4.848 4.848 0 0 0 6.028 24h10.72a6.073 6.073 0 0 0 6.066-6.066 6.568 6.568 0 0 0-3.383-5.741zm-14.136-1.7a5.065 5.065 0 0 1-2.607-4.309C2.627 3.61 4.79 1.5 7.367 1.5h10.508c1.797 0 3.345 1.378 3.434 3.173a3.345 3.345 0 0 1-3.337 3.51H11.92a.67.67 0 0 0-.67.67l-.001 4.94zM16.633 22.5H6.124c-1.797 0-3.345-1.378-3.434-3.173a3.345 3.345 0 0 1 3.337-3.51h6.053c.37 0 .67-.3.67-.67v-4.94l5.954 3.3a5.065 5.065 0 0 1 2.608 4.309c.06 2.575-2.103 4.684-4.679 4.684"/>
+            </svg>
+          </span>
+          <p>Session</p>
+        </a>
+      </div>
+    </div>
+    
+    <h3 class="section-subtitle">Social Media(s)</h3>
+    <div class="grid">
+      <div class="chat-box">
+        <a href="https://www.facebook.com/shovith.debnath.77?mibextid=ZbWKwL">
+          <span class="icon fab fa-facebook-f facebook"></span>
+          <p>Facebook</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="https://www.instagram.com/tu_amante_sd?igsh=NWV4cng2MmNrMmp0">
+          <span class="icon fab fa-instagram instagram"></span>
+          <p>Instagram</p>
+        </a>
+      </div>
+      
+      <div class="chat-box">
+        <a href="https://x.com/whoishawkay?t=pBbbMNKKeHVnRrcbPzAOpQ&s=09">
+          <span class="icon-x">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1da1f2"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>           
+          </span>
+          <p>X / Twitter</p>
+        </a>
+      </div>
+    </div>
+    
+    <div class="accent-shape"></div>
+  </section>
+  
+  <!-- Vault Section -->
+  <section class="section">
+    <h2 class="section-title">Vault</h2>
+    <p class="section-subtitle">[ Click icon to expand ]</p>
+    
+    <div class="vault-box" id="vault-box">
+      <i class="fas fa-lock icon"></i>
+      <i class="fas fa-times close-btn hidden" id="close-vault-btn"></i>
+      
+      <div id="vaultContent" class="hidden">
+        <input type="password" id="vault-password" placeholder="Enter Password">
+        <button id="submit">Submit</button>
+        
+        <div id="vault-content" class="hidden">
+          <h2>Good Job, Now Close It</h2>
+          <div class="img-container">
+            <img src="line.gif" alt="Line GIF">
+          </div>
+        </div>
+        
+        <div id="error" class="error-message hidden"></div>
+      </div>
+    </div>
+    
+    <div class="corner-slice"></div>
+  </section>
+  
+  <!-- Contact Form Section -->
+  <section class="section">
+    <h2 class="section-title">Contact Form</h2>
+    <p class="section-subtitle">[ use 'Message' button for quicker response ]</p>
+    
+    <div class="buttons-container">
+      <button class="toggle-button" id="showForm1">Email</button>
+      <button class="toggle-button" id="showForm2">Message</button>
+    </div>
+    
+    <!-- Email Form -->
+    <div class="contact hidden" id="form1Section">
+      <h2>Contact - Email</h2>
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="e1fb3642-9b4f-426e-83e8-37c075513392">
+        
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div>
+          <label for="purpose">Purpose:</label>
+          <select id="purpose" name="purpose" onchange="toggleOtherPurpose(this, 'other-purpose1')">
+            <option value="" disabled selected>Select Purpose</option>
+            <option value="Collaboration">Collaboration</option>
+            <option value="Feedback">Feedback</option>
+            <option value="Support">Support</option>
+            <option value="Business Inquiry">Business Inquiry</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" id="other-purpose1" name="other-purpose" placeholder="Please specify..." class="hidden">
+        </div>
+        
+        <div>
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        
+        <button type="submit">Submit</button>
+      </form>
+      <div id="response-message" class="hidden"></div>
+      <button class="close-btn" id="closeForm1">×</button>
+    </div>
+    
+    <!-- Message Form -->
+    <div class="contact hidden" id="form2Section">
+      <h2>Contact - Message</h2>
+      <form id="contactForm">
+        <div>
+          <label for="name2">Name:</label>
+          <input type="text" id="name2" name="name" required>
+        </div>
+        
+        <div>
+          <label for="phone">Phone Number:</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+        
+        <div>
+          <label for="purpose2">Purpose:</label>
+          <select id="purpose2" name="purpose" onchange="toggleOtherPurpose(this, 'other-purpose2')">
+            <option value="" disabled selected>Select Purpose</option>
+            <option value="Collaboration">Collaboration</option>
+            <option value="Feedback">Feedback</option>
+            <option value="Support">Support</option>
+            <option value="Business Inquiry">Business Inquiry</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" id="other-purpose2" name="other-purpose" placeholder="Please specify..." class="hidden">
+        </div>
+        
+        <div>
+          <label for="message2">Message:</label>
+          <textarea id="message2" name="message" required></textarea>
+        </div>
+        
+        <button type="submit">Send Message</button>
+      </form>
+      <div id="response-message-second" class="hidden"></div>
+      <button class="close-btn" id="closeForm2">×</button>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <p>
+      &copy; 2024 Connect, made by 
+      <a href="https://wa.me/+918777845713">Shovith</a>. All rights reserved. | 
+      <a href="#" id="privacy-link">Privacy Policy</a>
+    </p>
+  </footer>
+</div>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle" id="themeToggle">
+  <i class="fas fa-moon"></i>
+</div>
+
+<!-- Music Player -->
+<div class="music-player" id="musicPlayer">
+  <i class="fas fa-music"></i>
+</div>
+
+<!-- Audio Element -->
+<audio id="background-audio" src="Charli XCX - party 4 u _Official Audio_.mp3" preload="auto" loop></audio>
+
+
+
+
+
+<!-- Privacy Policy Popup -->
+<div id="privacy-popup" class="privacy-popup-container hidden">
+  <div class="privacy-popup-content">
+    <i id="privacy-close" class="fas fa-times privacy-close-btn"></i>
+    <h1 class="poli-h3" style="text-align: center; margin-bottom: 1.5rem;">Privacy Policy for Connect</h1>
+    <p class="poli-p" style="text-align: center; margin-bottom: 2rem;">Effective Date: May 14, 2025 | Last Updated: May 14, 2025</p>
+    
+    <h2 class="poli-h">1. Introduction</h2>
+    <p class="poli-p">
+      Welcome to <strong>Connect</strong>, a personal connection hub created and maintained by Shovith Debnath aka me. This Privacy Policy explains how I collect, use, disclose, and safeguard your information when you visit my website. Please read this policy carefully. By accessing or using the Site, you agree to the collection and use of information in accordance with this policy.
+    </p>
+    
+    <h2 class="poli-h">2. Information Collection</h2>
+    <h3 class="poli-h3">2.1 Information You Provide Directly</h3>
+    <p class="poli-p">
+      When you use the contact forms on my website, I may collect:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p"><strong>Email Form:</strong> Your name, email address, purpose of contact, and message content</li>
+      <li class="poli-p"><strong>Message Form:</strong> Your name, phone number (including country code), purpose of contact, and message content</li>
+      <li class="poli-p"><strong>Vault Access:</strong> Password attempts (not stored)</li>
+    </ul>
+    
+    <h3 class="poli-h3">2.2 Automatically Collected Information</h3>
+    <p class="poli-p">
+      When you visit the Site, certain information may be collected automatically:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p"><strong>Usage Data:</strong> Pages visited, time spent on pages, click patterns</li>
+      <li class="poli-p"><strong>Device Information:</strong> Browser type, operating system, device type</li>
+      <li class="poli-p"><strong>Location Data:</strong> Approximate location (city/country level) for weather and timezone display</li>
+      <li class="poli-p"><strong>IP Address:</strong> For basic security and analytics</li>
+    </ul>
+    
+    <h2 class="poli-h">3. Use of Information</h2>
+    <p class="poli-p">
+      The information I collect is used for the following purposes:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p">To respond to your inquiries and messages</li>
+      <li class="poli-p">To provide personalized local time and weather information</li>
+      <li class="poli-p">To improve the functionality and user experience of the Site</li>
+      <li class="poli-p">To analyze site usage and trends</li>
+      <li class="poli-p">To prevent fraudulent activity and enhance security</li>
+      <li class="poli-p">To comply with legal obligations</li>
+    </ul>
+    
+    <h2 class="poli-h">4. Data Sharing and Disclosure</h2>
+    <h3 class="poli-h3">4.1 Third-Party Service Providers</h3>
+    <p class="poli-p">
+      I use the following third-party services that may process your information:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p"><strong>Web3Forms:</strong> Processes email form submissions (their <a href="https://web3forms.com/privacy" class="poli-a">privacy policy</a>)</li>
+      <li class="poli-p"><strong>Telegram API:</strong> Processes message form submissions (their <a href="https://telegram.org/privacy" class="poli-a">privacy policy</a>)</li>
+      <li class="poli-p"><strong>Tomorrow.io:</strong> Provides weather data (their <a href="https://www.tomorrow.io/privacy" class="poli-a">privacy policy</a>)</li>
+      <li class="poli-p"><strong>Google Fonts:</strong> Provides typography (their <a href="https://policies.google.com/privacy" class="poli-a">privacy policy</a>)</li>
+      <li class="poli-p"><strong>Font Awesome:</strong> Provides icons (their <a href="https://fontawesome.com/privacy" class="poli-a">privacy policy</a>)</li>
+    </ul>
+    
+    <h3 class="poli-h3">4.2 Legal Requirements</h3>
+    <p class="poli-p">
+      I may disclose your information if required by law or in response to valid requests by public authorities.
+    </p>
+    
+    <h2 class="poli-h">5. Data Retention</h2>
+    <p class="poli-p">
+      I retain your personal information only for as long as necessary:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p"><strong>Contact Form Submissions:</strong> Until our conversation is concluded, unless you request deletion</li>
+      <li class="poli-p"><strong>Usage Data:</strong> Up to 12 months for analytics purposes</li>
+      <li class="poli-p"><strong>Vault Access Attempts:</strong> Not stored at all</li>
+    </ul>
+    
+    <h2 class="poli-h">6. Data Security</h2>
+    <p class="poli-p">
+      I implement appropriate security measures including:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p">HTTPS encryption for all data transmissions</li>
+      <li class="poli-p">Secure form processing through reputable services</li>
+      <li class="poli-p">Regular security reviews of the website</li>
+      <li class="poli-p">Minimal data collection - only what's necessary</li>
+    </ul>
+    <p class="poli-p">
+      However, no internet transmission is 100% secure. I cannot guarantee absolute security of your information.
+    </p>
+    
+    <h2 class="poli-h">7. Your Rights</h2>
+    <p class="poli-p">
+      Depending on your jurisdiction, you may have the following rights regarding your personal data:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p"><strong>Access:</strong> Request a copy of your personal data I hold</li>
+      <li class="poli-p"><strong>Rectification:</strong> Request correction of inaccurate data</li>
+      <li class="poli-p"><strong>Erasure:</strong> Request deletion of your personal data</li>
+      <li class="poli-p"><strong>Restriction:</strong> Request limited use of your data</li>
+      <li class="poli-p"><strong>Portability:</strong> Request transfer of your data to another service</li>
+      <li class="poli-p"><strong>Objection:</strong> Object to certain processing activities</li>
+    </ul>
+    <p class="poli-p">
+      To exercise these rights, please contact me using the information in Section 10.
+    </p>
+    
+    <h2 class="poli-h">8. International Data Transfers</h2>
+    <p class="poli-p">
+      As a global website, your information may be transferred to and processed in countries other than your own, including India where I am located. These countries may have data protection laws different from your jurisdiction. I take appropriate safeguards to ensure your data remains protected in accordance with this Privacy Policy.
+    </p>
+    
+    <h2 class="poli-h">9. Children's Privacy</h2>
+    <p class="poli-p">
+      My website is not directed at children under 13. I do not knowingly collect personal information from children under 13. If I become aware that a child under 13 has provided me with personal information, I will take steps to delete such information. If you believe a child under 13 has provided me with personal information, please contact me immediately.
+    </p>
+    
+    <h2 class="poli-h">10. Changes to This Policy</h2>
+    <p class="poli-p">
+      I may update this Privacy Policy from time to time. The updated version will be indicated by an updated "Last Updated" date at the top of this page. I encourage you to review this Privacy Policy periodically to stay informed about how I protect your information.
+    </p>
+    
+    <h2 class="poli-h">11. Contact Information</h2>
+    <p class="poli-p">
+      For any questions or concerns about this Privacy Policy or your personal data, you may contact me:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+      <li class="poli-p">By email: shovith2@gmail.com</li>
+      <li class="poli-p">By phone: +91 87778 45713</li>
+      <li class="poli-p">Through the contact forms on this website</li>
+    </ul>
+    
+    <p class="poli-p" style="text-align: center; margin-top: 2rem; font-style: italic;">
+      <strong>Thank you for taking the time to review my Privacy Policy. I value your trust in sharing your personal information with me.</strong>
+    </p>
+  </div>
+</div>
+
+
+
+<!-- Image Modal -->
+<div id="modal" class="modal hidden">
+  <span class="close-modal" id="close-modal">×</span>
+  <img class="modal-content" id="modal-img" alt="Preview">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+<script>
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+const icon = themeToggle.querySelector('i');
+
+// Check for saved theme preference or use preferred color scheme
+const currentTheme = localStorage.getItem('theme') || 
+                    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+// Apply the current theme
+if (currentTheme === 'light') {
+  document.body.classList.add('light-mode');
+  icon.classList.remove('fa-moon');
+  icon.classList.add('fa-sun');
+}
+
+// Toggle theme on button click
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+  const isLightMode = document.body.classList.contains('light-mode');
+  
+  // Change icon
+  if (isLightMode) {
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+  } else {
+    icon.classList.remove('fa-sun');
+    icon.classList.add('fa-moon');
+  }
+  
+  // Save preference
+  localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+});
+
+// Loader timeout
+const loader = document.querySelector(".loader-container");
+const mainContent = document.querySelector(".card");
+
+if (loader && mainContent) {
+  setTimeout(() => {
+    loader.style.display = "none";
+    mainContent.style.display = "block";
+    
+    // Add animation class to elements
+    document.querySelectorAll('.section').forEach((section, index) => {
+      setTimeout(() => {
+        section.classList.add('animated');
+      }, index * 200);
+    });
+  }, 2000);
+}
+
+// Music player functionality
+const musicPlayer = document.getElementById('musicPlayer');
+const audio = document.getElementById('background-audio');
+
+if (musicPlayer && audio) {
+  let isPlaying = false;
+  
+  musicPlayer.addEventListener('click', () => {
+    if (isPlaying) {
+      audio.pause();
+      musicPlayer.innerHTML = '<i class="fas fa-music"></i>';
+    } else {
+      audio.play().catch(e => console.log("Audio play failed:", e));
+      musicPlayer.innerHTML = '<i class="fas fa-pause"></i>';
+    }
+    isPlaying = !isPlaying;
+  });
+}
+
+// Share page functionality
+function sharePage() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Shovith - Connect',
+      text: 'Wanna connect? Head over to my page!',
+      url: window.location.href
+    }).catch((error) => {
+      console.error('Error sharing:', error);
+    });
+  } else {
+    alert('Sharing not supported on this browser.');
+  }
+}
+
+// Game box expand/collapse
+const gameBox = document.getElementById('game-box');
+const closeBtn = document.getElementById('close-btn');
+const gameDesc = document.getElementById('game-desc');
+
+if (gameBox && closeBtn && gameDesc) {
+  gameBox.addEventListener('click', function() {
+    if (!gameBox.classList.contains('active')) {
+      gameBox.classList.add('active');
+      gameDesc.classList.remove('hidden');
+    }
+  });
+
+  closeBtn.addEventListener('click', function(event) {
+    event.stopPropagation();
+    gameBox.classList.remove('active');
+    gameDesc.classList.add('hidden');
+  });
+}
+
+// Image modal functionality
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+const closeModal = document.getElementById('close-modal');
+
+if (modal && modalImg && closeModal) {
+  const previewImages = document.querySelectorAll('.preview-img');
+  previewImages.forEach(img => {
+    img.addEventListener('click', function() {
+      modal.classList.remove('hidden');
+      modalImg.src = this.src;
+    });
+  });
+
+  closeModal.addEventListener('click', function() {
+    modal.classList.add('hidden');
+  });
+
+  modal.addEventListener('click', function(event) {
+    if (event.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
+}
+
+// Vault section logic
+const vaultBox = document.getElementById('vault-box');
+const closeVaultBtn = document.getElementById('close-vault-btn');
+const vaultContent = document.getElementById('vaultContent');
+const submitButton = document.getElementById('submit');
+const passwordInput = document.getElementById('vault-password');
+const vaultInnerContent = document.getElementById('vault-content');
+const errorMessage = document.getElementById('error');
+const correctPassword = "12345";
+
+if (vaultBox && closeVaultBtn && vaultContent) {
+  vaultBox.addEventListener('click', function() {
+    if (!vaultBox.classList.contains('active')) {
+      vaultBox.classList.add('active');
+      vaultContent.classList.remove('hidden');
+      closeVaultBtn.classList.remove('hidden');
+    }
+  });
+  
+  if (submitButton && passwordInput && vaultInnerContent && errorMessage) {
+    submitButton.addEventListener('click', function(event) {
+      event.stopPropagation();
+      if (passwordInput.value === correctPassword) {
+        vaultInnerContent.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+      } else {
+        errorMessage.textContent = "Incorrect password. Please try again.";
+        errorMessage.classList.remove('hidden');
+        vaultInnerContent.classList.add('hidden');
+      }
+      passwordInput.value = '';
+    });
+  }
+  
+  closeVaultBtn.addEventListener('click', function(event) {
+    event.stopPropagation();
+    vaultBox.classList.remove('active');
+    closeVaultBtn.classList.add('hidden');
+    vaultContent.classList.add('hidden');
+    if (vaultInnerContent) vaultInnerContent.classList.add('hidden');
+    if (errorMessage) errorMessage.classList.add('hidden');
+    if (passwordInput) passwordInput.value = '';
+  });
+}
+
+// GPay popup
+const gpayButton = document.getElementById("gpay-button");
+const gpayPopup = document.getElementById("gpay-popup");
+const closePopup = document.getElementById("close-popup");
+
+if (gpayButton && gpayPopup && closePopup) {
+  gpayButton.addEventListener("click", () => {
+    gpayPopup.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  });
+
+  closePopup.addEventListener("click", () => {
+    gpayPopup.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  });
+
+  gpayPopup.addEventListener("click", (event) => {
+    if (event.target === gpayPopup) {
+      gpayPopup.classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+  });
+}
+
+// Contact Details popup
+const contactDetailsLink = document.getElementById("contact-details-link");
+const contactDetailsPopup = document.getElementById("contact-details-popup");
+const closeContactPopup = document.getElementById("close-contact-popup");
+const downloadVcfBtn = document.getElementById("download-vcf");
+
+if (contactDetailsLink && contactDetailsPopup && closeContactPopup) {
+  contactDetailsLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    contactDetailsPopup.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  });
+
+  closeContactPopup.addEventListener("click", () => {
+    contactDetailsPopup.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  });
+
+  contactDetailsPopup.addEventListener("click", (event) => {
+    if (event.target === contactDetailsPopup) {
+      contactDetailsPopup.classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+  });
+}
+
+// VCF download functionality
+if (downloadVcfBtn) {
+  downloadVcfBtn.addEventListener("click", async function() {
+    try {
+      // Fetch the hero image as base64
+      const imageUrl = 'Dp/+91 87778 45713 20241201_101310.jpg';
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const reader = new FileReader();
+      
+      reader.onload = function() {
+        const base64Image = reader.result.split(',')[1];
+        
+        // Create vCard with image
+        const vcfData = `BEGIN:VCARD
+VERSION:3.0
+FN:Shovith Debnath
+ORG:Autistic ass boi
+EMAIL;TYPE=INTERNET:shovith2@gmail.com
+EMAIL;TYPE=WORK:jonathanhark2002@gmail.com
+TEL;TYPE=CELL:+918777845713
+ADR;TYPE=HOME:;;Kolkata,;West Bengal,;;;India
+URL:https://hawkay002.github.io/Connect/
+PHOTO;ENCODING=b;TYPE=JPEG:${base64Image}
+END:VCARD`;
+
+        const vcfBlob = new Blob([vcfData], { type: 'text/vcard' });
+        const url = URL.createObjectURL(vcfBlob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Shovith_Debnath.vcf';
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+      };
+      
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error('Error generating vCard:', error);
+      // Fallback without image if there's an error
+      const vcfData = `BEGIN:VCARD
+VERSION:3.0
+FN:Shovith Debnath
+ORG:Autistic ass boi
+EMAIL;TYPE=INTERNET:shovith2@gmail.com
+EMAIL;TYPE=WORK:jonathanhark2002@gmail.com
+TEL;TYPE=CELL:+918777845713
+ADR;TYPE=HOME:;;Kolkata;West Bengal;;;India
+URL:https://hawkay002.github.io/Connect/
+END:VCARD`;
+
+      const blob = new Blob([vcfData], { type: 'text/vcard' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Shovith_Debnath.vcf';
+      document.body.appendChild(a);
+      a.click();
+      
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    }
+  });
+}
+
+// Session ID copy functionality
+const sessionLink = document.getElementById('session-link');
+const sessionId = '05492cad6f3ae85cbbf361b14bf715c32b03008d0b00ccb187f305ba4535cb3273';
+
+if (sessionLink) {
+  sessionLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    navigator.clipboard.writeText(sessionId).then(() => {
+      // Create and show a notification
+      const notification = document.createElement('div');
+      notification.style.position = 'fixed';
+      notification.style.top = '50%';
+      notification.style.left = '50%';
+      notification.style.transform = 'translateX(-50%)';
+      notification.style.backgroundColor = document.body.classList.contains('light-mode') ? '#00b4d8' : '#ff073a';
+      notification.style.color = document.body.classList.contains('light-mode') ? '#1a2e3b' : '#fff';
+      notification.style.padding = '10px 20px';
+      notification.style.borderRadius = '20px';
+      notification.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.5)';
+      notification.style.zIndex = '10000';
+      notification.style.fontFamily = '"Space Grotesk", sans-serif';
+      notification.style.fontSize = '0.9rem';
+      notification.style.textAlign = 'center';
+      notification.style.width = 'auto';
+      notification.style.maxWidth = '80%';
+      notification.style.whiteSpace = 'nowrap';
+      notification.textContent = 'Session ID copied to clipboard!';
+      
+      document.body.appendChild(notification);
+      
+      // Remove after 3 seconds
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 500);
+      }, 3000);
+    }).catch(err => {
+      console.error('Failed to copy Session ID: ', err);
+      alert('Failed to copy Session ID. Please copy it manually: ' + sessionId);
+    });
+  });
+}
+
+// Privacy policy popup
+const privacyLink = document.getElementById("privacy-link");
+const privacyPopup = document.getElementById("privacy-popup");
+const closePrivacyBtn = document.getElementById("privacy-close");
+
+if (privacyLink && privacyPopup && closePrivacyBtn) {
+  privacyLink.addEventListener("click", function(e) {
+    e.preventDefault();
+    privacyPopup.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  });
+
+  closePrivacyBtn.addEventListener("click", function() {
+    privacyPopup.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  });
+
+  privacyPopup.addEventListener("click", function(e) {
+    if (e.target === privacyPopup) {
+      privacyPopup.classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+  });
+}
+
+// Game link warning popups
+function createGameWarningPopup(url, websiteName) {
+  const popup = document.getElementById('game-warning-popup');
+  const continueBtn = document.getElementById('continue-to-site');
+  const cancelBtn = document.getElementById('cancel-redirect');
+  const closeBtn = document.getElementById('close-warning');
+  
+  if (popup && continueBtn && cancelBtn && closeBtn) {
+    popup.querySelector('.warn-p strong').textContent = websiteName;
+    
+    continueBtn.onclick = function() {
+      window.location.href = url;
+    };
+    
+    const closePopup = function() {
+      popup.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    };
+    
+    cancelBtn.onclick = closePopup;
+    closeBtn.onclick = closePopup;
+    
+    popup.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Add warning to all game links
+const gameLinks = [
+  { selector: 'a[href="https://uniteapi.dev/p/LXLC5ET?type=auto"]', site: 'Unite API' },
+  { selector: 'a[href="https://www.clashofstats.com/players/hawkay-9V9VRYJCL/summary"]', site: 'Clash of Stats' },
+  { selector: 'a[href="https://brawlify.com/stats/profile/88880U08G"]', site: 'Brawlify' },
+  { selector: 'a[href="https://royaleapi.com/player/8P89JGGRJ"]', site: 'Royale API' }
+];
+
+gameLinks.forEach(link => {
+  const element = document.querySelector(link.selector);
+  if (element) {
+    element.addEventListener('click', (e) => {
+      e.preventDefault();
+      createGameWarningPopup(element.href, link.site);
+    });
+  }
+});
+
+// Contact form toggles
+const showForm1Btn = document.getElementById('showForm1');
+const showForm2Btn = document.getElementById('showForm2');
+const form1 = document.getElementById('form1Section');
+const form2 = document.getElementById('form2Section');
+const closeForm1Btn = document.getElementById('closeForm1');
+const closeForm2Btn = document.getElementById('closeForm2');
+
+if (showForm1Btn && showForm2Btn && form1 && form2) {
+  showForm1Btn.addEventListener('click', () => {
+    form1.classList.remove('hidden');
+    showForm1Btn.classList.add('hidden');
+    showForm2Btn.classList.add('hidden');
+  });
+
+  showForm2Btn.addEventListener('click', () => {
+    form2.classList.remove('hidden');
+    showForm1Btn.classList.add('hidden');
+    showForm2Btn.classList.add('hidden');
+  });
+
+  closeForm1Btn.addEventListener('click', () => {
+    form1.classList.add('hidden');
+    showForm1Btn.classList.remove('hidden');
+    showForm2Btn.classList.remove('hidden');
+  });
+
+  closeForm2Btn.addEventListener('click', () => {
+    form2.classList.add('hidden');
+    showForm1Btn.classList.remove('hidden');
+    showForm2Btn.classList.remove('hidden');
+  });
+}
+
+// Form 1 submit (Web3Forms)
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    fetch(this.action, {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      const responseMessage = document.getElementById('response-message');
+      if (responseMessage) {
+        responseMessage.textContent = data.success ? 'Message sent successfully!' : 'Error sending message.';
+        responseMessage.classList.remove('hidden');
+        if (data.success) this.reset();
+      }
+    })
+    .catch(() => {
+      const responseMessage = document.getElementById('response-message');
+      if (responseMessage) {
+        responseMessage.textContent = 'Error sending message. Please try again.';
+        responseMessage.classList.remove('hidden');
+      }
+    });
+  });
+}
+
+// Form 2 submit (Telegram)
+const telegramForm = document.getElementById("contactForm");
+if (telegramForm) {
+  telegramForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const phoneInput = document.querySelector("#phone");
+    const fullNumber = phoneInput ? window.intlTelInputGlobals.getInstance(phoneInput).getNumber() : e.target.phone.value;
+    const message = e.target.message.value;
+    const purpose = e.target.purpose.value;
+    const otherPurposeInput = document.getElementById('other-purpose2');
+    const finalPurpose = purpose === 'Other' ? otherPurposeInput.value : purpose;
+
+    const telegramBotToken = '8174571488:AAEbvdnFXRCXy-Qa1Q5ABJc1JoQnthJkmNI';
+    const chatId = '1299129410';
+    const text = `New message from your website: Shovith - Connect\nName: ${name}\nPhone: ${fullNumber}\nPurpose: ${finalPurpose}\nMessage: ${message}`;
+
+    fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`)
+      .then(response => response.json())
+      .then(data => {
+        const responseMessage = document.getElementById('response-message-second');
+        if (responseMessage) {
+          responseMessage.textContent = data.ok ? 'Message sent successfully!' : 'Failed to send message.';
+          responseMessage.classList.remove('hidden');
+          if (data.ok) e.target.reset();
+        }
+      })
+      .catch(() => {
+        const responseMessage = document.getElementById('response-message-second');
+        if (responseMessage) {
+          responseMessage.textContent = 'Error sending message. Please try again.';
+          responseMessage.classList.remove('hidden');
+        }
+      });
+  });
+}
+
+// Show/hide Other purpose input
+function toggleOtherPurpose(select, otherInputId) {
+  const input = document.getElementById(otherInputId);
+  if (input) {
+    if (select.value === 'Other') {
+      input.style.display = 'block';
+      input.required = true;
+    } else {
+      input.style.display = 'none';
+      input.required = false;
+    }
+  }
+}
+
+// Initialize phone input with country code
+const phoneInput = document.querySelector("#phone");
+if (phoneInput) {
+  window.intlTelInput(phoneInput, {
+    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    preferredCountries: ['in', 'us', 'gb', 'ca', 'au'],
+    separateDialCode: true,
+    initialCountry: "in",
+    autoPlaceholder: "polite",
+    customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+      return selectedCountryPlaceholder.replace(/[0-9]/g, 'x');
+    },
+    dropdownContainer: document.body,
+    geoIpLookup: function(callback) {
+      fetch("https://ipapi.co/json")
+        .then(function(res) { return res.json(); })
+        .then(function(data) { callback(data.country_code); })
+        .catch(function() { callback('in'); });
+    }
+  });
+
+  // Update input border when country selected
+  phoneInput.addEventListener('countrychange', function() {
+    const flagContainer = document.querySelector('.iti__selected-flag');
+    if (flagContainer) {
+      flagContainer.style.borderRight = '1px solid rgba(0, 0, 0, 0.1)';
+      if (document.body.classList.contains('light-mode')) {
+        flagContainer.style.borderRight = '1px solid rgba(0, 0, 0, 0.1)';
+      }
+    }
+  });
+}
+
+// Time and weather functionality
+const timeEl = document.getElementById("time");
+const dateEl = document.getElementById("date");
+const dayEl = document.getElementById("day");
+const weatherIconEl = document.getElementById("weather-icon");
+const temperatureEl = document.getElementById("temperature");
+const dayNightIconEl = document.getElementById("day-night-icon");
+
+function updateDateTime() {
+  if (!timeEl || !dateEl || !dayEl || !dayNightIconEl) return;
+  
+  const now = new Date();
+  const timeString = now.toLocaleTimeString('en-US', {
+    hour12: true,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+  timeEl.textContent = timeString;
+
+  const dateString = now.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  dateEl.textContent = dateString;
+
+  const dayString = now.toLocaleDateString('en-US', { weekday: 'long' });
+  dayEl.textContent = dayString;
+
+  const hour = now.getHours();
+  if (hour >= 6 && hour < 18) {
+    dayNightIconEl.className = "fas fa-sun";
+    dayNightIconEl.style.color = document.body.classList.contains('light-mode') ? "#ffac33" : "#ffd700";
+  } else {
+    dayNightIconEl.className = "fas fa-moon";
+    dayNightIconEl.style.color = document.body.classList.contains('light-mode') ? "#6666ff" : "#a0a0ff";
+  }
+}
+
+function getWeatherIcon(weatherCode) {
+  const weatherIcons = {
+    0: 'fa-sun',
+    1000: 'fa-sun',
+    1001: 'fa-cloud-sun',
+    1100: 'fa-cloud',
+    1101: 'fa-cloud-sun',
+    1102: 'fa-cloud',
+    4000: 'fa-cloud',
+    4001: 'fa-cloud-rain',
+    4200: 'fa-cloud-rain',
+    4201: 'fa-cloud-showers-heavy',
+    6000: 'fa-snowflake',
+    6001: 'fa-snowflake',
+    6200: 'fa-snowflake',
+    6201: 'fa-snowflake',
+    7000: 'fa-snowflake',
+    7101: 'fa-snowflake',
+    7102: 'fa-snowflake',
+    8000: 'fa-bolt'
+  };
+  return weatherIcons[weatherCode] || 'fa-cloud';
+}
+
+function updateWeather(data) {
+  if (!weatherIconEl || !temperatureEl) return;
+  
+  if (!data || !data.data || !data.data.values) {
+    weatherIconEl.className = 'fas fa-cloud weather-icon';
+    temperatureEl.textContent = '--°C';
+    return;
+  }
+  
+  const weatherCode = data.data.values.weatherCode;
+  const iconClass = getWeatherIcon(weatherCode);
+  const temperature = data.data.values.temperature;
+  weatherIconEl.className = 'fas ' + iconClass + ' weather-icon';
+  temperatureEl.textContent = `${temperature.toFixed(1)}°C`;
+}
+
+function getWeather() {
+  if (!weatherIconEl || !temperatureEl) return;
+  
+  const apiKey = 'Y2BlwqZQGXrZ0fPqYQ9odAPRHpaIrmRN';
+  const latitude = '22.5726';
+  const longitude = '88.3639';
+  const apiUrl = `https://api.tomorrow.io/v4/weather/realtime?location=${latitude},${longitude}&apikey=${apiKey}`;
+  
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => updateWeather(data))
+    .catch(error => {
+      console.error('Error fetching weather data:', error);
+      weatherIconEl.className = 'fas fa-cloud weather-icon';
+      temperatureEl.textContent = 'N/A';
+    });
+}
+
+// Initial calls
+updateDateTime();
+getWeather();
+setInterval(updateDateTime, 1000);
+setInterval(getWeather, 10 * 60 * 1000);
+</script>
+</body>
+</html>
